@@ -7,7 +7,7 @@ Cache Billing
 <h5>Cache billing system</h3>
 
 [![Build Status](https://github.com/medunes/cache-billing/workflows/build/badge.svg?style=flat-square)](https://github.com/medunes/cache-billing/actions?query=workflow%3A%22build%22)
-[![Author](https://img.shields.io/badge/author-@medunes-blue.svg?style=flat-square)](https:/blog.medunes.net)
+[![Author](https://img.shields.io/badge/author-@medunes-blue.svg?style=flat-square)](https://blog.medunes.net)
 [![codecov](https://codecov.io/gh/medunes/cache-billing/branch/master/graph/badge.svg?token=RWOA8OR0B9)](https://codecov.io/gh/medunes/cache-billing)
 [![PHPStan](https://img.shields.io/badge/PHPStan-Level%205-brightgreen.svg?style=flat&logo=php)](https://shields.io/#/)
 [![Psalm](https://img.shields.io/badge/Psalm-Level%205-brightgreen.svg?style=flat&logo=php)](https://shields.io/#/)
