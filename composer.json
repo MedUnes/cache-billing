@@ -61,7 +61,7 @@
     "symfony/stopwatch": "^5.4",
     "symfony/var-dumper": "^5.4",
     "symfony/web-profiler-bundle": "^5.4",
-    "vimeo/psalm": "^4.2"
+    "vimeo/psalm": "^5.18"
   },
   "scripts": {
     "auto-scripts": {
