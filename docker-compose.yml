@@ -1,0 +1,23 @@
+version: "3.7"
+services:
+  php-cli:
+    container_name: cache-billing-symfony-cli
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        PHP_VERSION: ${PHP_VERSION}
+    environment:
+      TZ: "Europe/Berlin"
+      LC_ALL: "C.UTF-8"
+      LANG: "C.UTF-8"
+    volumes:
+      - app:/app
+volumes:
+  app:
+    name: cache_billing_app
+    driver: local
+    driver_opts:
+      o: bind
+      type: none
+      device: ${PWD}

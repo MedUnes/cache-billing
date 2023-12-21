@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<meta charset="UTF-8">
+<title>{% block title %}Cache Billing{% endblock %}</title>
+<style>
+    /* inline CSS as this is not intended to be rendered on a web server, but rather for document export */
+    h1, h2, h3 {
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
+    }
+</style>
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"/>
+{% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="ui grid">
+        <div class="one column row">
+            <div class="column">
+                <h1 id="sender_name" class="ui basic segment header">Best Company</h1>
+            </div>
+        </div>
+        <div class="one column row">
+            <div class="column">
+                <p id="sender_address" class="ui basic segment ">
+                    Best Company - best street 1 - 12345 Best City
+                </p>
+            </div>
+        </div>
+        <div class="one column row">
+            <div class="column">
+                <h3 class="ui basic segment">
+                    <span id="address_line_1">{{ address_line_1 }} </span><br/>
+                    <span id="address_line_2">{{ address_line_2 }} </span><br/>
+                    <span id="address_line_3">{{ address_line_3 }} </span><br/>
+                    <span id="address_line_4">{{ address_line_4 }} </span><br/>
+                    <br/>
+                </h3>
+            </div>
+        </div>
+        <div class="three column row">
+            <div class="right floated column">
+                <p class="ui basic segment header">
+                    <span id="sender_phone">Tel 012/34 56 78 90</span><br/>
+                    <span id="sender_fax">Fax 012/34 56 78 90 </span><br/>
+                    <span id="sender_email">info@best-company.com </span><br/><br/><br/>
+                    <span id="edit_date">{{ edit_date }} </span><br/>
+                    <br/>
+                </p>
+            </div>
+        </div>
+        <div class="one column row">
+            <div class="column">
+                <h3 id="reference_number" class="ui basic segment header">Bill {{ reference_number }}</h3>
+            </div>
+        </div>
+        <div class="one column row">
+            <div class="column">
+                <table class="ui celled table">
+                    <thead>
+                    <tr>
+                        <th>Usage</th>
+                        <th>Unit Price</th>
+                        <th>Count</th>
+                        <th>Total Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td data-label="Name">
+                            Cache <br/>
+                            Provision <br/>
+                            {{ domain }}<br/>
+                            {{ month }}<br/>
+                            100.000 PI
+                        </td>
+                        <td data-label="Age">{{ unit_price }}</td>
+                        <td data-label="Job">{{ units }}</td>
+                        <td data-label="Job">{{ net_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Name">19% VAT</td>
+                        <td data-label="Age"></td>
+                        <td data-label="Job"></td>
+                        <td data-label="Job">{{ vat }}</td>
+                    </tr>
+                    <tr>
+                        <td data-label="Name">Total Amount</td>
+                        <td data-label="Age"></td>
+                        <td data-label="Job"></td>
+                        <td data-label="Job">{{ total_amount }}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="signature" class="one column row">
+            <div class="column">
+                <h3 class="ui basic segment">Payment term: after receipt of invoice</h3>
+                <h3 class="ui basic segment">Best Regards</h3>
+                <h3 class="ui basic segment">Best CEO</h3>
+
+            </div>
+        </div>
+        <div class="three column row">
+            <div class="column" ¬>
+                <p id="bill_number" class="ui basic segment">
+                    Best Company (c) <br/>
+                    best street 7<br/>
+                    1234 best city <br/>
+                    CEO: John Doe <br/>
+                </p>
+            </div>
+            <div class="column">
+                <p id="bill_number" class="ui basic segment">
+                    VAT ID <br/>
+                    123/456/7890<br/>
+                    VAT center, <br/>
+                    XXX 123456 <br/>
+                </p>
+            </div>
+            <div class="column">
+                <p id="bill_number" class="ui basic segment">
+                    Account details <br/>
+                    Best Bank (c)<br/>
+                    Number 283 277 500 <br/>
+                    XXX 450 600 09 <br/>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

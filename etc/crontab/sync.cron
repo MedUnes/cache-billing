@@ -1,0 +1,5 @@
+# download the latest cache export file every start of a month
+0 0 1 * * curl https://{{ remote_site }}/{{ remote_cache_path }}/cache-`date +"%Y-%m"`.csv > {{ app_path }}/download/cache/cache-`date +"%Y-%m"`.csv
+
+# download customer data daily
+0 0 * * * curl https://{{ remote_site }}/{{ remote_customers_path }}/customers.ods > {{ app_path }}/download/customer/customers.ods

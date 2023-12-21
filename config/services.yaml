@@ -1,0 +1,154 @@
+parameters:
+
+  tmp_path: '%kernel.project_dir%/tmp'
+
+  # export configs
+  template_data_file_path: '%kernel.project_dir%/download/template/Template_Bill.odt'
+  enclosure_map:
+    '$$': '%%'
+  template_placeholders:
+    '$$address_line_1$$': address_line_1
+    '$$address_line_2$$': address_line_2
+    '$$address_line_3$$': address_line_3
+    '$$address_line_4$$': address_line_4
+    '$$edit_date$$': edit_date
+    '$$reference_number$$': reference_number
+    '$$domain$$': domain
+    '$$month$$': month
+    '$$unit_price$$': unit_price
+    '$$units$$': units
+    '$$total_amount$$': total_amount
+    '$$net_amount$$': net_amount
+    '$vat$$': vat
+
+  export_path: '%kernel.project_dir%/public/export'
+
+  # usage cache configs
+  usage_cache_file_path: '%kernel.project_dir%/download/cache'
+  usage_cache_header_map:
+    'date': date
+    'url': domain
+    'pi/ day': pi
+    'mb/ day': traffic
+  usage_cache_type_map:
+    date: date
+    domain: string
+    pi: int
+    traffic: float
+  usage_cache_file_config:
+    separator: ';'
+    enclosure: '"'
+    escape: '\'
+
+  # customer data configs
+  customer_data_file_path: '%kernel.project_dir%/download/customer/customers.ods'
+  customer_data_header_map:
+    '$$domain$$': domain
+    '$$username$$': username
+    '$$unit_price$$': unit_price
+    '$$vat$$': vat
+    '$$address_line_1$$': address_line_1
+    '$$address_line_2$$': address_line_2
+    '$$address_line_3$$': address_line_3
+    '$$address_line_4$$': address_line_4
+    '$$address_line_5$$': address_line_5
+    '$$termination_date$$': termination_date
+    '$$email$$': email
+    '$$salutation$$': salutation
+  customer_data_file_entry_xpath: '//office:document-content/office:body/office:spreadsheet/table:table/table:table-row'
+
+services:
+  # default configuration for services in *this* file
+  _defaults:
+    autowire: true      # Automatically injects dependencies in your services.
+    autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+    bind:
+      $enclosureMap: '%enclosure_map%'
+      $tmpPath: '%tmp_path%'
+      $templateDataFilePath: '%template_data_file_path%'
+      $exportPath: '%export_path%'
+      $templatePlaceholders: '%template_placeholders%'
+
+      $usageCacheFilePath: '%usage_cache_file_path%'
+      $usageCacheHeaderMap: '%usage_cache_header_map%'
+      $usageCacheTypeMap: '%usage_cache_type_map%'
+      $usageCacheFileConfig: '%usage_cache_file_config%'
+
+      $customerDataFilePath: '%customer_data_file_path%'
+      $customerDataFileEntryXpath: '%customer_data_file_entry_xpath%'
+      $customerDataHeaderMap: '%customer_data_header_map%'
+
+  # makes classes in src/ available to be used as services
+  # this creates a service per class whose id is the fully-qualified class name
+  App\:
+    resource: '../src/'
+    exclude:
+      - '../src/DependencyInjection/'
+      - '../src/Entity/'
+      - '../src/Kernel.php'
+      - '../src/Tests/'
+
+  # controllers are imported separately to make sure services can be injected
+  # as action arguments even if you don't extend any base controller class
+  App\Controller\:
+    resource: '../src/Controller/'
+    tags: [ 'controller.service_arguments' ]
+
+  # add more service definitions when explicit configuration is needed
+  # please note that last definitions always *replace* previous ones
+
+  #Pipelines
+
+  App\Command\CacheBillGenerateCommand:
+    arguments:
+      $billGenerationPipeline: '@BillGenerationPipeline'
+
+  BillGenerationPipeline:
+    class: League\Pipeline\Pipeline
+    arguments:
+      $stages:
+        - '@App\Pipeline\BillGeneration\CustomerStage'
+        - '@App\Pipeline\BillGeneration\UsageCacheStage'
+        - '@App\Pipeline\BillGeneration\ExportStage'
+
+  CustomerPipeline:
+    class: League\Pipeline\Pipeline
+    arguments:
+      $stages:
+        - '@App\Pipeline\Customer\PlaceholdersInjectionStage'
+        - '@App\Pipeline\PlaceholdersSanitizationStage'
+        - '@App\Pipeline\Customer\DataExtractionStage'
+        - '@App\Pipeline\DataProcessingStage'
+        - '@App\Pipeline\Customer\EntryFetchingStage'
+
+  UsageCachePipeline:
+    class: League\Pipeline\Pipeline
+    arguments:
+      $stages:
+        - '@App\Pipeline\UsageCache\PlaceholdersInjectionStage'
+        - '@App\Pipeline\PlaceholdersSanitizationStage'
+        - '@App\Pipeline\UsageCache\FilesLoadingStage'
+        - '@App\Pipeline\UsageCache\DataProcessingStage'
+        - '@App\Pipeline\UsageCache\AggregationStage'
+  ExportPipeline:
+    class: League\Pipeline\Pipeline
+    arguments:
+      $stages:
+        - '@App\Pipeline\Export\PathGenerationStage'
+        - '@App\Pipeline\Export\ReferenceNumberGenerationStage'
+        - '@App\Pipeline\Export\PathCreationStage'
+        - '@App\Pipeline\Export\PlaceholderMapStage'
+        - '@App\Pipeline\Export\OdtWriteStage'
+        - '@App\Pipeline\Export\HtmlWriteStage'
+
+  App\Pipeline\BillGeneration\CustomerStage:
+    arguments:
+      $customerPipeline: '@CustomerPipeline'
+
+  App\Pipeline\BillGeneration\UsageCacheStage:
+    arguments:
+      $usageCachePipeline: '@UsageCachePipeline'
+
+  App\Pipeline\BillGeneration\ExportStage:
+    arguments:
+      $exportPipeline: '@ExportPipeline'
