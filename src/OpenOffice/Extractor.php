@@ -3,10 +3,14 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the medunes/cache-billing PHP package.
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ *     This file is part of medunes/cache-billing.
+ *
+ *     (c) medunes <contact@medunes.net>
+ *
+ *     This source file is subject to the MIT license that is bundled
+ *     with this source code in the file LICENSE.
+ *
  */
 
 namespace App\OpenOffice;
@@ -55,7 +59,7 @@ class Extractor
      */
     private function unpackOpenOfficeDocument(string $filePath, string $fullTmpPath): void
     {
-        exec("unzip -o $filePath -d $fullTmpPath", $output, $result);
+        exec("unzip -o {$filePath} -d {$fullTmpPath}", $output, $result);
         if ($result) {
             throw new CacheBillingException(sprintf('Unable unpack user data file: %s', $filePath));
         }
@@ -75,6 +79,6 @@ class Extractor
 
     private function clear(string $fullTmpPath): void
     {
-        @exec("rm -rf $fullTmpPath");
+        @exec("rm -rf {$fullTmpPath}");
     }
 }

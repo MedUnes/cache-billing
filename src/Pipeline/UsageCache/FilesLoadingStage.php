@@ -3,10 +3,14 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the medunes/cache-billing PHP package.
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ *     This file is part of medunes/cache-billing.
+ *
+ *     (c) medunes <contact@medunes.net>
+ *
+ *     This source file is subject to the MIT license that is bundled
+ *     with this source code in the file LICENSE.
+ *
  */
 
 namespace App\Pipeline\UsageCache;
@@ -33,7 +37,8 @@ class FilesLoadingStage
         $finder
             ->in($this->usageCacheFilePath)
             ->files()
-            ->name($payload->getUsageCacheFileNames());
+            ->name($payload->getUsageCacheFileNames())
+        ;
         if (!$finder->hasResults()) {
             throw new CacheBillingException(sprintf('No usage cache files with the patterns: %s found in %s', implode(',', $payload->getUsageCacheFileNames()), $this->usageCacheFilePath));
         }

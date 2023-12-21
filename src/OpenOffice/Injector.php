@@ -3,10 +3,14 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the medunes/cache-billing PHP package.
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ *     This file is part of medunes/cache-billing.
+ *
+ *     (c) medunes <contact@medunes.net>
+ *
+ *     This source file is subject to the MIT license that is bundled
+ *     with this source code in the file LICENSE.
+ *
  */
 
 namespace App\OpenOffice;
@@ -51,7 +55,7 @@ class Injector
     {
         $explodedPath = explode('/', $filePath);
         $shortFilePath = end($explodedPath);
-        $cmd = "mkdir $fullTmpPath && cp $filePath $fullTmpPath && cd $fullTmpPath && unzip $shortFilePath && rm $shortFilePath";
+        $cmd = "mkdir {$fullTmpPath} && cp {$filePath} {$fullTmpPath} && cd {$fullTmpPath} && unzip {$shortFilePath} && rm {$shortFilePath}";
         exec($cmd, $output, $result);
 
         if ($result) {
@@ -64,7 +68,7 @@ class Injector
      */
     private function packOpenOfficeDocument(string $filePath, string $fullTmpPath): void
     {
-        $cmd = "cd $fullTmpPath && zip -r - . | dd of=$filePath ";
+        $cmd = "cd {$fullTmpPath} && zip -r - . | dd of={$filePath} ";
         exec($cmd, $output, $result);
 
         if ($result) {
@@ -84,19 +88,19 @@ class Injector
 
     private function clear(string $fullTmpPath): void
     {
-        @exec("rm -rf $fullTmpPath");
+        @exec("rm -rf {$fullTmpPath}");
     }
 
     /**
      * @throws CacheBillingException
      */
-    private function createIfNotExistsExportPath(string $exportPath)
+    private function createIfNotExistsExportPath(string $exportPath): void
     {
-        $cmd = "mkdir -p $exportPath";
+        $cmd = "mkdir -p {$exportPath}";
         exec($cmd, $output, $result);
 
         if ($result) {
-            throw new CacheBillingException("Unable to create Bill export path  $exportPath");
+            throw new CacheBillingException("Unable to create Bill export path  {$exportPath}");
         }
     }
 }

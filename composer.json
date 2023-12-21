@@ -75,7 +75,7 @@
       "@auto-scripts"
     ],
     "setup:clean": "rm -f composer.lock && rm -rf vendor/ && composer clearcache && composer update --no-interaction --prefer-dist --no-suggest --no-progress",
-    "phpcs:scan": "php vendor/bin/php-cs-fixer fix --verbose --dry-run --stop-on-violation --using-cache=no --config=.php_cs.dist src/",
+    "phpcs:scan": "php vendor/bin/php-cs-fixer fix --verbose --dry-run --stop-on-violation --using-cache=no --config=.php-cs-fixer.dist.php src/",
     "phpcs:fix": "php vendor/bin/phpcbf",
     "build:phpunit": "php vendor/bin/phpunit -c phpunit.xml --coverage-clover coverage.xml",
     "build:phpstan": [
