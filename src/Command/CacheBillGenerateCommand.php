@@ -1,16 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 /*
- * This file is part of the medunes/cache-billing PHP package.
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ *     This file is part of medunes/cache-billing.
+ *
+ *     (c) medunes <contact@medunes.net>
+ *
+ *     This source file is subject to the MIT license that is bundled
+ *     with this source code in the file LICENSE.
+ *
  */
 
 namespace App\Command;
 
 use App\Pipeline\BillGeneration\Payload;
-use InvalidArgumentException;
 use League\Pipeline\Pipeline;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -19,7 +24,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Throwable;
 
 /** @codeCoverageIgnore  */
 class CacheBillGenerateCommand extends Command implements LoggerAwareInterface
@@ -30,10 +34,8 @@ class CacheBillGenerateCommand extends Command implements LoggerAwareInterface
     private const EXPORT_TYPE_ODT = 'odt';
     private const USAGE_CACHE_EXTENSION = 'csv';
     private const SupportExportTypes = [self::EXPORT_TYPE_HTML, self::EXPORT_TYPE_ODT];
-    private const DAYS_OF_MONTH_PATTERN = '(0[1-9]|^[12]\d|^3[01])';
-
     protected static $defaultName = 'cache:bill:generate';
-    protected static  $defaultDescription = 'Generates customer bill given its username and usage year/month';
+    protected static $defaultDescription = 'Generates customer bill given its username and usage year/month';
 
     private Pipeline $billGenerationPipeline;
 
@@ -44,7 +46,7 @@ class CacheBillGenerateCommand extends Command implements LoggerAwareInterface
         $this->billGenerationPipeline = $billGenerationPipeline;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setDescription(self::$defaultDescription)
@@ -68,14 +70,15 @@ class CacheBillGenerateCommand extends Command implements LoggerAwareInterface
                 'f',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 'Usage cache file names (csv) to be scanned (default: all)',
-                ['*.'.static::USAGE_CACHE_EXTENSION]
+                ['*.'.self::USAGE_CACHE_EXTENSION]
             )->addOption(
                 'export',
                 'x',
                 InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                 "Generates bill file type: one of 'odt' or 'html'",
-                static::SupportExportTypes
-            );
+                self::SupportExportTypes
+            )
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -107,7 +110,8 @@ class CacheBillGenerateCommand extends Command implements LoggerAwareInterface
                 ->setBillMonth($billMonth)
                 ->setBillYear($billYear)
                 ->setExportTypes($exportTypes)
-                ->setUsageCacheFileNames($usageCacheFileNames);
+                ->setUsageCacheFileNames($usageCacheFileNames)
+            ;
 
             /** @var Payload $processedPayload */
             $processedPayload = $this->billGenerationPipeline->process($payload);
@@ -121,7 +125,7 @@ class CacheBillGenerateCommand extends Command implements LoggerAwareInterface
             ]);
 
             return Command::SUCCESS;
-        } catch (Throwable $e) {
+        } catch (\Throwable $e) {
             $this->logger->error($e->getMessage(), ['exception' => $e]);
 
             return Command::FAILURE;
@@ -131,22 +135,22 @@ class CacheBillGenerateCommand extends Command implements LoggerAwareInterface
     private function validateYear(string $billYear): void
     {
         if (!preg_match('/20[0-9][0-9]/', $billYear)) {
-            throw new InvalidArgumentException(sprintf('Bad year format: %s', $billYear));
+            throw new \InvalidArgumentException(sprintf('Bad year format: %s', $billYear));
         }
     }
 
     private function validateMonth(string $billMonth): void
     {
         if (!preg_match('/0[1-9]10||11|12/', $billMonth)) {
-            throw new InvalidArgumentException(sprintf('Bad month format: %s', $billMonth));
+            throw new \InvalidArgumentException(sprintf('Bad month format: %s', $billMonth));
         }
     }
 
     private function validateExportTypes(array $exportTypes): void
     {
         foreach ($exportTypes as $exportType) {
-            if (!\in_array($exportType, static::SupportExportTypes, true)) {
-                throw new InvalidArgumentException(sprintf('Bad export type: %s', $exportType));
+            if (!\in_array($exportType, self::SupportExportTypes, true)) {
+                throw new \InvalidArgumentException(sprintf('Bad export type: %s', $exportType));
             }
         }
     }
@@ -154,8 +158,8 @@ class CacheBillGenerateCommand extends Command implements LoggerAwareInterface
     private function validateUsageFileNames(array $usageFileNames): void
     {
         foreach ($usageFileNames as $usageFileName) {
-            if (!preg_match(sprintf('/.*\.%s/', static::USAGE_CACHE_EXTENSION), $usageFileName)) {
-                throw new InvalidArgumentException(sprintf('Bad usage cache file extension: %s', $usageFileName));
+            if (!preg_match(sprintf('/.*\.%s/', self::USAGE_CACHE_EXTENSION), $usageFileName)) {
+                throw new \InvalidArgumentException(sprintf('Bad usage cache file extension: %s', $usageFileName));
             }
         }
     }

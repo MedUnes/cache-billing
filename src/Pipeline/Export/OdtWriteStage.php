@@ -3,10 +3,14 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the medunes/cache-billing PHP package.
  *
- * This source file is subject to the MIT license that is bundled
- * with this source code in the file LICENSE.
+ *     This file is part of medunes/cache-billing.
+ *
+ *     (c) medunes <contact@medunes.net>
+ *
+ *     This source file is subject to the MIT license that is bundled
+ *     with this source code in the file LICENSE.
+ *
  */
 
 namespace App\Pipeline\Export;
@@ -23,7 +27,6 @@ class OdtWriteStage
 {
     private const ODT_EXTENSION = 'odt';
 
-    private string $exportPath;
     private Extractor $openOfficeDataExtractor;
     private string $templateDataFilePath;
     private Injector $openOfficeDataInjector;
@@ -41,7 +44,6 @@ class OdtWriteStage
      * @param string[] $templatePlaceholders
      */
     public function __construct(
-        string $exportPath,
         Extractor $openOfficeDataExtractor,
         string $templateDataFilePath,
         Injector $openOfficeDataInjector,
@@ -52,7 +54,6 @@ class OdtWriteStage
         Mapper $mapper,
         PlaceHolderMapSanitizer $placeHolderMapSanitizer
     ) {
-        $this->exportPath = $exportPath;
         $this->enclosureMap = $enclosureMap;
         $this->openOfficeDataExtractor = $openOfficeDataExtractor;
         $this->templateDataFilePath = $templateDataFilePath;

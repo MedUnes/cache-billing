@@ -47,7 +47,7 @@ class CsvTableReader implements TableReaderInterface
         $header = $this->getHeader();
         do {
             $row = $this->readRow();
-        } while ($row === static::BLANK_LINE);
+        } while ($row === self::BLANK_LINE);
 
         if (empty($row)) {
             return null;

@@ -53,6 +53,6 @@ class Calculator
      */
     public function units(int $pi): int
     {
-        return (int) ceil($pi / static::PI_PER_UNIT);
+        return (int) ceil($pi / self::PI_PER_UNIT);
     }
 }

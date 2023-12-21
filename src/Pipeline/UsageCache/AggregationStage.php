@@ -29,7 +29,7 @@ class AggregationStage
         $totalPi = (int) $dataUsageRepository->sum(
             [
                 'domain' => preg_quote($payload->getDomain()),
-                'date' => sprintf('^%s\.%s\.%s$', static::DAYS_OF_MONTH_PATTERN, $payload->getBillMonth(), $payload->getBillYear()),
+                'date' => sprintf('^%s\.%s\.%s$', self::DAYS_OF_MONTH_PATTERN, $payload->getBillMonth(), $payload->getBillYear()),
             ],
             'pi'
         );

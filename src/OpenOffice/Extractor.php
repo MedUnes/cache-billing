@@ -66,7 +66,7 @@ class Extractor
      */
     private function readContent(string $fullTmpPath, string $filePath): string
     {
-        if (!$userData = file_get_contents($fullTmpPath.static::CONTENT_FILE_NAME)) {
+        if (!$userData = file_get_contents($fullTmpPath.self::CONTENT_FILE_NAME)) {
             throw new CacheBillingException(sprintf('Unable to load customer data from: %s', $filePath));
         }
 

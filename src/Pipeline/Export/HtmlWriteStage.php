@@ -20,12 +20,10 @@ use Twig\Error\SyntaxError;
 class HtmlWriteStage
 {
     private const HTML_EXTENSION = 'html';
-    private string $exportPath;
     private Twig $twig;
 
-    public function __construct(Twig $twig, string $exportPath)
+    public function __construct(Twig $twig)
     {
-        $this->exportPath = $exportPath;
         $this->twig = $twig;
     }
 

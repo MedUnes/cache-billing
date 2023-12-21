@@ -77,8 +77,8 @@ class Injector
      */
     private function overwriteContent(string $xmlData, string $fullTmpPath): void
     {
-        if (!file_put_contents($fullTmpPath.static::CONTENT_FILE_NAME, $xmlData)) {
-            throw new CacheBillingException(sprintf('Unable to write content to Bill ODT file: %s', $fullTmpPath.static::CONTENT_FILE_NAME));
+        if (!file_put_contents($fullTmpPath.self::CONTENT_FILE_NAME, $xmlData)) {
+            throw new CacheBillingException(sprintf('Unable to write content to Bill ODT file: %s', $fullTmpPath.self::CONTENT_FILE_NAME));
         }
     }
 
